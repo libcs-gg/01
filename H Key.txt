@@ -1,0 +1,187 @@
+在GitHub上连接已有仓库时进行身份认证，是通过使用SSH的公开密钥认证进行的。
+下面位于文件夹‘c/Users/Administrator/.ssh/’的文件id_rsa是私有密钥，
+而位于文件夹‘c/Users/Administrator/.ssh/’的文件id_rsa.pub是公开密钥。
+
+一、设置密钥
+设置SSH密钥的行命令如下：
+$ ssh-keygen -t rsa -C "libcsgg@gmail.com"
+
+Generating public/private rsa key pair.
+Enter file in which to save the key (/c/Users/Administrator/.ssh/id_rsa):(按了回车）
+Created directory '/c/Users/Administrator/.ssh'.
+Enter passphrase (empty for no passphrase):
+
+Enter passphrase (empty for no passphrase):（输入密码 =GitHub-mima）
+Enter same passphrase again:（输入密码 =GitHub-mima）
+
+Your identification has been saved in /c/Users/Administrator/.ssh/id_rsa
+Your public key has been saved in /c/Users/Administrator/.ssh/id_rsa.pub
+The key fingerprint is:
+SHA256:cQ5yPicAD9m4gtsQPEPSlEZTKp1d+pODg9XtT3GM0ew libcsgg@gmail.com
+The key's randomart image is:
++---[RSA 3072]----+
+|+=+o++.   .o     |
+|o=+=oB..   +o    |
+|.+* +.= = +.o    |
+|o..o.o B = oE    |
+| +..o = S +      |
+|. .  . o *       |
+|          .      |
+|                 |
+|                 |
++----[SHA256]-----+
+
+
+Administrator@9ZTANO19JR2C9XJ MINGW64 ~
+$
+设置成功！
+(注意：别忘了刚才输入的密码 123***** ，共6个数字，6+2个字符)
+
+
+二、在GitHub中添加公开密钥
+
+1、先登录我的GitHub账号，用户名：Libcs。然后进入“设置-SSH and
+GPG keys”，填Title 为用户名Libc，
+
+2、为了填写"Key",回到Git Bash终端，执行下面行命令输出文件id_rsa.pub的内容。
+行命令如下：
+$ cat .ssh/id_rsa.pub 
+输出的内容：
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDugbSA/wT85FPZM7Nzytt46SfRIZ0Fn+3rafnqsui85Zn8LEv75sLnK8W4fZH2gUhHsw83/lPA3M1gJf2qleU1PxhT2lpC7U6gkXvM1CUioA4FV5L7JXYNIOrhB/DSEqqY0MWwzFqbJULo46In/WGjPHxwUOx7egyFJc1WYO5floysywXNdqI/dEIZPf4hgDqZHzTAAJGfo3EgVVgY607FdyTUAu3AVBAM1F9cQZxh5n5MjoePVLKYoEZNxJwo6Dw2/cbTktZ19sHv+CmqzGfXvRLgMVLhcrq1JRgJ0Lu4L6CxO9SRyhbUreAFmCyu9nFi1U+7P8eEoHOtwPcDcBWxmz+iSWfwuUv7g4xg9AKvUAgL3XCIpPcYZZbqigZiZhgvbR8TAeMWK7FQs0uAk+360Ai7vh8DefjkKk8dLS5f4xNj2G6hwUWsZUx7D8kU5JH7k3XFa0kkrJtLlk4UfiLaSH4Q0as5PoZfm47JIPNPtOhP2hzk1jnR+eTwOqS4N1k= libcsgg@gmail.com
+把上面的内容复制到GitHub页面的"Key"方块内，然后点击 Add SSH Key。
+
+3、重新登录GitHub，添加公开密钥完成。
+注意：如果忘记了，可以删除后重新添加。
+This is a list of SSH keys associated with your account. 
+Remove any keys that you do not recognize.
+
+4、验证
+
+（需要输入 yes 然后输入密码）
+$ ssh -T git@github.com
+The authenticity of host 'github.com (20.205.243.166)' can't be established.
+ED25519 key fingerprint is SHA256:+DiY3wvvV6TuJJhbpZisF/zLDA0zPMSvHdkr4UvCOqU.
+This key is not known by any other names
+Are you sure you want to continue connecting (yes/no/[fingerprint])? 
+Please type 'yes', 'no' or the fingerprint: yes
+Warning: Permanently added 'github.com' (ED25519) to the list of known hosts.
+Enter passphrase for key '/c/Users/Administrator/.ssh/id_rsa':
+Hi libcs-gg! You've successfully authenticated, but GitHub does not provide shell access.
+
+至此验证完成
+
+
+三、创建版本库
+阅读: 1399148672
+什么是版本库呢？版本库又名仓库，英文名repository，你可以简单理解成一个目录，这个目录里面的所有文件都可以被Git管理起来，每个文件的修改、删除，Git都能跟踪，以便任何时刻都可以追踪历史，或者在将来某个时刻可以“还原”。
+
+所以，创建一个版本库非常简单。
+
+首先，选择一个合适的地方，创建一个空目录：
+$ mkdir learngit
+$ cd learngit
+$ pwd
+/Users/michael/learngit
+pwd命令用于显示当前目录。
+在我的Mac上，这个仓库位于/Users/michael/learngit。
+如果你使用Windows系统，为了避免遇到各种莫名其妙的问题，请确保目录名（包括父目录）不包含中文。
+
+第二步，通过git init命令把这个目录变成Git可以管理的仓库：
+$ git init
+Initialized empty Git repository in /Users/michael/learngit/.git/
+瞬间Git就把仓库建好了，而且告诉你是一个空的仓库（empty Git repository），细心的读者可以发现当前目录下多了一个.git的目录，这个目录是Git来跟踪管理版本库的，没事千万不要手动修改这个目录里面的文件，不然改乱了，就把Git仓库给破坏了。
+如果你没有看到.git目录，那是因为这个目录默认是隐藏的，用ls -ah命令就可以看见。
+
+第三步，把文件添加到版本库
+首先这里再明确一下，所有的版本控制系统，其实只能跟踪文本文件的改动，比如TXT文件，网页，所有的程序代码等等，Git也不例外。版本控制系统可以告诉你每次的改动，比如在第5行加了一个单词“Linux”，在第8行删了一个单词“Windows”。而图片、视频这些二进制文件，虽然也能由版本控制系统管理，但没法跟踪文件的变化，只能把二进制文件每次改动串起来，也就是只知道图片从100KB改成了120KB，但到底改了啥，版本控制系统不知道，也没法知道。
+不幸的是，Microsoft的Word格式是二进制格式，因此，版本控制系统是没法跟踪Word文件的改动的，前面我们举的例子只是为了演示，如果要真正使用版本控制系统，就要以纯文本方式编写文件。
+因为文本是有编码的，比如中文有常用的GBK编码，日文有Shift_JIS编码，如果没有历史遗留问题，强烈建议使用标准的UTF-8编码，所有语言使用同一种编码，既没有冲突，又被所有平台所支持。
+
+使用Windows的童鞋要特别注意：
+千万不要使用Windows自带的记事本编辑任何文本文件。原因是Microsoft开发记事本的团队使用了一个非常弱智的行为来保存UTF-8编码的文件，他们自作聪明地在每个文件开头添加了0xefbbbf（十六进制）的字符，你会遇到很多不可思议的问题，比如，网页第一行可能会显示一个“?”，明明正确的程序一编译就报语法错误，等等，都是由记事本的弱智行为带来的。
+
+建议你下载Visual Studio Code代替记事本，不但功能强大，而且免费！
+
+言归正传，现在我们编写一个readme.txt文件，内容如下：
+Git is a version control system.
+Git is free software.
+
+一定要放到learngit目录下（子目录也行），因为这是一个Git仓库，放到其他地方Git再厉害也找不到这个文件。
+
+和把大象放到冰箱需要3步相比，把一个文件放到Git仓库只需要两步。
+
+第1步，用命令git add告诉Git，把文件添加到仓库：
+
+$ git add readme.txt
+执行上面的命令，没有任何显示，这就对了，Unix的哲学是“没有消息就是好消息”，说明添加成功。
+
+第2步，用命令git commit告诉Git，把文件提交到仓库：
+$ git commit -m "wrote a readme file"
+[master (root-commit) eaadf4e] wrote a readme file
+ 1 file changed, 2 insertions(+)
+ create mode 100644 readme.txt
+简单解释一下git commit命令，-m后面输入的是本次提交的说明，可以输入任意内容，当然最好是有意义的，这样你就能从历史记录里方便地找到改动记录。
+
+嫌麻烦不想输入-m "xxx"行不行？确实有办法可以这么干，但是强烈不建议你这么干，因为输入说明对自己对别人阅读都很重要。实在不想输入说明的童鞋请自行Google，我不告诉你这个参数。
+
+git commit命令执行成功后会告诉你，1 file changed：1个文件被改动（我们新添加的readme.txt文件）；2 insertions：插入了两行内容（readme.txt有两行内容）。
+
+为什么Git添加文件需要add，commit一共两步呢？因为commit可以一次提交很多文件，所以你可以多次add不同的文件，比如：
+$ git add file1.txt
+$ git add file2.txt file3.txt
+$ git commit -m "add 3 files."
+------------------------------------------------------------------------
+注意：
+
+我一开始在Git Bash中按照上面的说法做，并没有成功！
+
+Administrator@9ZTANO19JR2C9XJ MINGW64 /d/2022/GitHub Study/01 (main)
+$ cd ..                 （复习退回上级目录的命令）
+Administrator@9ZTANO19JR2C9XJ MINGW64 /d/2022/GitHub Study (main)
+$ ls
+ 01/   Python/   image-p01/  '设置 SSH Key.txt'   远程克隆库.txt
+Administrator@9ZTANO19JR2C9XJ MINGW64 /d/2022/GitHub Study (main)
+$ dir 01
+readme\ .txt              （文件名中包含有一个空格“\ ”，在Windows中去掉后） 
+Administrator@9ZTANO19JR2C9XJ MINGW64 /d/2022/GitHub Study (main)
+$ cd 01
+Administrator@9ZTANO19JR2C9XJ MINGW64 /d/2022/GitHub Study/01 (main)
+$ dir
+readme.txt
+Administrator@9ZTANO19JR2C9XJ MINGW64 /d/2022/GitHub Study/01 (main)
+$ git add readme.txt         （这行执行正常，但是下面一行报错）
+Administrator@9ZTANO19JR2C9XJ MINGW64 /d/2022/GitHub Study/01 (main)
+$ git commit -m "wrote a readme file"
+Author identity unknown
+
+*** Please tell me who you are.
+Run
+  git config --global user.email "you@example.com"
+  git config --global user.name "Your Name"
+to set your account's default identity.
+Omit --global to set the identity only in this repository.
+
+fatal: empty ident name (for <libcsgg@gmail,com>) not allowed
+
+我根据上面提示先输入我的登记邮箱和用户名：
+$ git config --global user.email "**********"
+$ git config --global user.name "*****"
+再输入
+$ git commit -m "wrote a readme file"
+任务完成!
+--------------------------------------------------------------------------
+
+疑难解答
+Q：输入git add readme.txt，得到错误：fatal: not a git repository (or any of the parent directories)。
+A：Git命令必须在Git仓库目录内执行（git init除外），在仓库目录外执行是没有意义的。
+Q：输入git add readme.txt，得到错误fatal: pathspec 'readme.txt' did not match any files。
+A：添加某个文件时，该文件必须在当前目录下存在，用ls或者dir命令查看当前目录的文件，看看文件是否存在，或者是否写错了文件名。
+
+小结
+
+现在总结一下今天学的两点内容：
+初始化一个Git仓库，使用git init命令。
+添加文件到Git仓库，分两步：
+
+使用命令git add <file>，注意，可反复多次使用，添加多个文件；
+使用命令git commit -m <message>，完成。
